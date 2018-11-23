@@ -1,8 +1,24 @@
 import React, { Component } from 'react';
+import * as tf from '@tensorflow/tfjs';
 import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      model: null,
+    };
+
+    this.loadModel();
+  }
+
+  async loadModel() {
+    let loadedModel = await tf.loadModel(process.env.PUBLIC_URL + '/model.json');
+    this.setState({model: loadedModel});
+  }
+
   render() {
     return (
       <div className="App">
