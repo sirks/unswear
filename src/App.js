@@ -45,6 +45,10 @@ class App extends Component {
       this.text2Speech.speak(event.target.value);
   };
 
+  onChangeText = (event) => {
+    this.setState({text: event.target.value});
+  };
+
   render() {
     const stateInitialized = this.state.model && this.state.vocab;
     const Toxicity = (chunkSize) => {
@@ -73,7 +77,7 @@ class App extends Component {
             {Toxicity(10)}
           </div> :
           undefined}
-        <input type='text' onBlur={this.onBlurText}/>
+        <input type='text' onBlur={this.onBlurText} onChange={this.onChangeText}/>
       </div>
     );
   }
