@@ -96,14 +96,16 @@ class ToxicityScores extends Component {
 
       const newResults = await Promise.all(chunkPromises);
       const chunkResults = this.state.chunkResults.slice(0, -1).concat(newResults);
-      this.setState({chunkResults});
 
       const data =
         chunkResults
           .reduce((acc, results) => acc.map((e, i) => { return e + results[i]; }), initData)
           .map((e) => e / chunkResults.length);
 
-      this.setState({data});
+      this.setState({
+        chunkResults,
+        data,
+      });
     };
   };
 
