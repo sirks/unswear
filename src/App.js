@@ -4,15 +4,14 @@ import Text2Speech from './tools/Text2Speech';
 import Toxicity from "./tools/Toxicity";
 import {getSynonym} from './tools/thesaurus';
 import SpeechRecorder from "./tools/SpeechRecorder";
+import Speedometer from "./components/Speedometer";
 
 const TOXIC_THRESHOLD = 0.33;
-import Speedometer from "./components/Speedometer";
 
 class App extends Component {
   constructor() {
     super();
 
-    // let greeting = 'Hi. I am Fred. Prepare your prayers to get unsweared';
     let greeting = 'Hi';
     this.text2Speech = new Text2Speech();
     this.text2Speech.speak(greeting);
@@ -32,18 +31,17 @@ class App extends Component {
     if (wordScore > TOXIC_THRESHOLD) {
       this.text2Speech.speak(await getSynonym(lastWord));
     }
+  };
 
-  someWord = async () => console.log(await getRightWord('pie'));
-
-    render(){
-      return (
-        <div className='App'>
-          <input type='text' onChange={this.onChangeText}/>
-          <SpeechRecorder/>
-          <Speedometer/>
-        </div>
-      );
-    }
+  render() {
+    return (
+      <div className='App'>
+        <input type='text' onChange={this.onChangeText}/>
+        <SpeechRecorder/>
+        <Speedometer/>
+      </div>
+    );
   }
+}
 
-  export default App;
+export default App;
