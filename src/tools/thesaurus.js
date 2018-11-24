@@ -1,27 +1,19 @@
 import * as rp from 'request-promise-native';
 
-async function getRightWord(swearWord){
-  let i = 0;
-  while (i < 5){
-    const options = {
-      uri: `https://tuna.thesaurus.com/relatedWords/${swearWord}?limit=1&offset=${i}`,
-      json: true,
-    };
-    debugger;
-    const resp = await rp.get(options);
-    debugger;
-    if (!resp.data){
-      return;
-    }
-    else {
-      for (let synonym of resp.data[0].synonyms){
-      if (synonym.similarity==='100'){
-        return synonym.targetTerm;
-      }
-      }
-    }
-    i++;
+async function getSynonym(swearWord) {
+  const options = {
+    uri: `https://tuna.thesaurus.com/relatedWords/${swearWord}?limit=9&offset=0`,
+    json: true,
+  };
+  const resp = await rp.get(options);
+  if (!resp.data) {
+    return;
   }
+  const allSynonyms = resp.data
+  .flatMap(meaning => meaning.synonyms)
+  .filter(synonym => synonym.term !== swearWord);
+  const randomSynonym = allSynonyms[Math.floor(Math.random() * allSynonyms.length)];
+  return randomSynonym.term
 }
 
-export { getRightWord };
+export {getSynonym};
