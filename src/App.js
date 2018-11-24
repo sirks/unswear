@@ -4,7 +4,7 @@ import './App.css';
 import Text2Speech from './tools/Text2Speech';
 import {getRightWord} from './tools/thesaurus';
 import * as rp from 'request-promise-native';
-
+import SpeechRecorder from './tools/SpeechRecorder';
 import ToxicityScores from './components/ToxicityScores';
 
 class App extends Component {
@@ -86,6 +86,7 @@ class App extends Component {
           </div> :
           undefined}
         <input type='text' onBlur={this.onBlurText} onChange={this.onChangeText}/>
+        <SpeechRecorder/>
       </div>
     );
   }
