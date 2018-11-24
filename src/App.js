@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import * as tf from '@tensorflow/tfjs';
 import './App.css';
 import Text2Speech from './tools/Text2Speech';
+import {getRightWord} from './tools/thesaurus';
 import * as rp from 'request-promise-native';
 
 import ToxicityScores from './components/ToxicityScores';
@@ -16,12 +17,18 @@ class App extends Component {
       data: this.initData,
     };
 
+    this.loadModel();
+
+    this.someWord()
+
     let greeting = 'Me Fred. Me help you unswear';
     this.text2Speech = new Text2Speech();
     this.text2Speech.speak(greeting);
 
     this.initializeState();
   }
+
+  someWord = async () => console.log(await getRightWord('pie'))
 
   initializeState = async () => await Promise.all([this.loadVocab(), this.loadModel()]);
 
@@ -32,6 +39,7 @@ class App extends Component {
     };
 
     const vocab = await rp.get(options);
+    debugger;
     this.setState({vocab});
   };
 
