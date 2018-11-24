@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import * as tf from '@tensorflow/tfjs';
+import {throttle} from 'lodash';
 
 const renderScore = (score) => {
   return (Math.round(score * 1000) / 10) + '%';
@@ -43,6 +44,9 @@ class ToxicityScores extends Component {
       chunkSize: props.chunkSize,
       chunkResults: [],
     };
+
+    this.calculate = throttle(this.calculate, 150);
+    this.chunkedCalculate = throttle(this.chunkedCalculate, 150);
   }
 
   calculate = async (text) => {
@@ -53,7 +57,7 @@ class ToxicityScores extends Component {
     if (text && model && vocab) {
       const tensorBuffer = tf.zeros([1, 100]).buffer();
 
-      const words = text.split(' ');
+      const words = text.trim().split(' ');
       let wordIndex = 0;
       words.forEach((value) => {
         if (vocab.hasOwnProperty(value)) {
@@ -76,7 +80,7 @@ class ToxicityScores extends Component {
       const tensorBuffer = tf.zeros([1, 100]).buffer();
 
       const skipWords = Math.max(0, this.state.chunkResults.length - 1) * this.state.chunkSize;
-      const newWords = text.split(' ').slice(skipWords);
+      const newWords = text.trim().split(' ').slice(skipWords);
 
       const chunkPromises = chunk(newWords, this.state.chunkSize).map(async (words) => {
         let wordIndex = 0;
@@ -104,12 +108,16 @@ class ToxicityScores extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.text !== prevProps.text &&
-        this.props.text.split(' ').length !== prevProps.text.split(' ').length) {
+    if (this.props.text !== prevProps.text) {
       if (this.state.chunkSize > 0) {
         this.chunkedCalculate(this.props.text);
       } else {
         this.calculate(this.props.text);
+      }
+      // Flush on new words
+      if (this.props.text.split(' ').length !== prevProps.text.split(' ').length) {
+        this.calculate.flush();
+        this.chunkedCalculate.flush();
       }
     }
   }
