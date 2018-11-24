@@ -2,7 +2,6 @@ class Text2Speech {
   constructor() {
     this.synth = window.speechSynthesis;
     this.utterance = new SpeechSynthesisUtterance();
-    this.utterance.onend = () => console.log('speaking finished');
     this.utterance.onerror = () => console.error('speaking error');
     this.utterance.pitch = 1;
     this.utterance.rate = 1;

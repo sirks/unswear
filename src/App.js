@@ -13,6 +13,10 @@ class App extends Component {
   constructor() {
     super();
 
+    this.state = {
+      level: 0,
+    };
+
     // let greeting = 'Hi. I am Fred. Prepare your prayers to get unsweared';
     let greeting = 'Hi';
     this.text2Speech = new Text2Speech();
@@ -33,14 +37,15 @@ class App extends Component {
     if (wordScore > TOXIC_THRESHOLD) {
       this.text2Speech.speak(await getSynonym(lastWord));
     }
+    this.setState({level: totalScore})
   };
 
-  render(){
+  render() {
     return (
       <div className='App'>
-        <input type='text' onChange={this.onChangeText}/>
+        <textarea onChange={this.onChangeText}/>
         <SpeechRecorder/>
-        <Speedometer/>
+        <Speedometer level={this.state.level}/>
       </div>
     );
   }
