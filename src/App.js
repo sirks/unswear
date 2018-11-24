@@ -6,12 +6,14 @@ import {getSynonym} from './tools/thesaurus';
 import SpeechRecorder from "./tools/SpeechRecorder";
 import Speedometer from "./components/Speedometer";
 
+
 const TOXIC_THRESHOLD = 0.33;
 
 class App extends Component {
   constructor() {
     super();
 
+    // let greeting = 'Hi. I am Fred. Prepare your prayers to get unsweared';
     let greeting = 'Hi';
     this.text2Speech = new Text2Speech();
     this.text2Speech.speak(greeting);
@@ -33,7 +35,7 @@ class App extends Component {
     }
   };
 
-  render() {
+  render(){
     return (
       <div className='App'>
         <input type='text' onChange={this.onChangeText}/>
