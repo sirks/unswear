@@ -71,7 +71,7 @@ class App extends Component {
           <ToxicityScores
             model={this.state.model}
             vocab={this.state.vocab}
-            text={this.state.text}
+            text={this.state.text || ''}
             chunkSize={chunkSize}
           />
         </div>

@@ -104,7 +104,8 @@ class ToxicityScores extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.text !== prevProps.text) {
+    if (this.props.text !== prevProps.text &&
+        this.props.text.split(' ').length !== prevProps.text.split(' ').length) {
       if (this.state.chunkSize > 0) {
         this.chunkedCalculate(this.props.text);
       } else {
