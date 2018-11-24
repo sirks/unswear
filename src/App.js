@@ -16,8 +16,6 @@ class App extends Component {
       data: this.initData,
     };
 
-    this.loadModel();
-
     let greeting = 'Me Fred. Me help you unswear';
     this.text2Speech = new Text2Speech();
     this.text2Speech.speak(greeting);
@@ -25,10 +23,7 @@ class App extends Component {
     this.initializeState();
   }
 
-  initializeState = async () => {
-    await Promise.all([this.loadVocab(), this.loadModel()]);
-    return;
-  };
+  initializeState = async () => await Promise.all([this.loadVocab(), this.loadModel()]);
 
   loadVocab = async () => {
     const options = {
@@ -38,33 +33,25 @@ class App extends Component {
 
     const vocab = await rp.get(options);
     this.setState({vocab});
-
-    return;
-  }
+  };
 
   loadModel = async () => {
     const loadedModel = await tf.loadModel(process.env.PUBLIC_URL + '/model.json');
     this.setState({model: loadedModel});
-
-    return;
-  }
+  };
 
   onBlurText = (event) => {
     if (event.target.value)
       this.text2Speech.speak(event.target.value);
   };
 
-  onChangeText = (event) => {
-    this.setState({text: event.target.value});
-  };
-
   render() {
     const stateInitialized = this.state.model && this.state.vocab;
     const Toxicity = (chunkSize) => {
       const header =
-            chunkSize ?
-            `Toxicity counts for chunk size ${chunkSize}` :
-            `Toxicity counts for unchunked input`;
+        chunkSize ?
+          `Toxicity counts for chunk size ${chunkSize}` :
+          `Toxicity counts for unchunked input`;
       return (
         <div>
           <h3>{header}</h3>
@@ -79,14 +66,14 @@ class App extends Component {
     };
     return (
       <div className='App'>
-        { stateInitialized ?
+        {stateInitialized ?
           <div className="toxic-container">
             {Toxicity()}
             {Toxicity(1)}
             {Toxicity(10)}
           </div> :
-          undefined }
-        <input type='text' onBlur={this.onChangeText} onChange={this.onChangeText} />
+          undefined}
+        <input type='text' onBlur={this.onBlurText}/>
       </div>
     );
   }
