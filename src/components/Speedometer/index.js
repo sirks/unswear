@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import speedometer from "../../assets/speedometer.png";
 import "../../App.css";
 
@@ -9,28 +9,32 @@ class Speedometer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      x1: 0,
-      x2: 0
+      x: 0
     };
   }
 
   componentDidMount() {
-    setTimeout(() => this.setState({ x1: 0, x2: 65 }), 3000);
-    setTimeout(() => this.setState({ x1: 10, x2: -55 }), 6000);
+    setTimeout(() => this.setState({x: 90}), 2000);
+    setTimeout(() => this.setState({x: 45}), 4000);
+    setTimeout(() => this.setState({x: 160}), 6000);
+    setTimeout(() => this.setState({x: 20}), 8000);
+    setTimeout(() => this.setState({x: 150}), 10000);
+    setTimeout(() => this.setState({x: 90}), 12000);
   }
 
   render() {
     const speedometerRotate = {
-      transform: `rotate(${this.state.x1}deg) rotate(${this.state.x2}deg)`
+      transform: `rotate(${this.state.x}deg)`
     };
 
     return (
       <div className="speedometer-container">
         <div style={speedometerRotate}>
-          <img src={speedometer} />
+          <img src={speedometer}/>
         </div>
       </div>
     );
   }
 }
+
 export default Speedometer;
