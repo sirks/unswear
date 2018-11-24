@@ -1,6 +1,6 @@
 # The Unswear Project
-## Purpouse
-embrace yourself your prayers is about get unsweared
+## Purpose
+embrace yourself your prayers are about to be unsweared
 
 ## create-react-app
 
