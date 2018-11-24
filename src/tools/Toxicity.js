@@ -30,7 +30,7 @@ class Toxicity {
   }
 
   ready() {
-    return this.vocabulary && this.model
+    return this.vocabulary && this.model;
   }
 
   async testWord(word) {
@@ -44,7 +44,7 @@ class Toxicity {
   async addWord(word) {
     let wordScore = await this.testWord(word);
     this.totalScore = (this.totalScore * this.wordCount + wordScore) / ++this.wordCount;
-    return {wordScore, totalScore: this.totalScore}
+    return {wordScore, totalScore: this.totalScore};
   }
 
   reset() {
@@ -54,4 +54,4 @@ class Toxicity {
 
 }
 
-export default Toxicity
+export default Toxicity;
