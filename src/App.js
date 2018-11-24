@@ -60,14 +60,31 @@ class App extends Component {
 
   render() {
     const stateInitialized = this.state.model && this.state.vocab;
-    return (
-      <div className='App'>
-        { stateInitialized ?
+    const Toxicity = (chunkSize) => {
+      const header =
+            chunkSize ?
+            `Toxicity counts for chunk size ${chunkSize}` :
+            `Toxicity counts for unchunked input`;
+      return (
+        <div>
+          <h3>{header}</h3>
           <ToxicityScores
             model={this.state.model}
             vocab={this.state.vocab}
             text={this.state.text}
-          /> :
+            chunkSize={chunkSize}
+          />
+        </div>
+      );
+    };
+    return (
+      <div className='App'>
+        { stateInitialized ?
+          <div className="toxic-container">
+            {Toxicity()}
+            {Toxicity(1)}
+            {Toxicity(10)}
+          </div> :
           undefined }
         <input type='text' onBlur={this.onChangeText} onChange={this.onChangeText} />
       </div>

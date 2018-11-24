@@ -27,12 +27,21 @@ const initData = [
   0, //identity hate
 ];
 
+const chunk = (array, chunkSize) => {
+  const chunks = [];
+  for (let i = 0; i < array.length; i += chunkSize)
+    chunks.push(array.slice(i, i + chunkSize));
+  return chunks;
+};
+
 class ToxicityScores extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      data: initData
+      data: initData,
+      chunkSize: props.chunkSize,
+      chunkResults: [],
     };
   }
 
@@ -59,9 +68,49 @@ class ToxicityScores extends Component {
     this.setState({data});
   }
 
+  chunkedCalculate = async (text) => {
+    const model = this.props.model;
+    const vocab = this.props.vocab;
+
+    if (text && model && vocab) {
+      const tensorBuffer = tf.zeros([1, 100]).buffer();
+
+      const skipWords = Math.max(0, this.state.chunkResults.length - 1) * this.state.chunkSize;
+      const newWords = text.split(' ').slice(skipWords);
+
+      const chunkPromises = chunk(newWords, this.state.chunkSize).map(async (words) => {
+        let wordIndex = 0;
+        words.forEach((value) => {
+          if (vocab.hasOwnProperty(value)) {
+            tensorBuffer.set(vocab[value], 0, wordIndex);
+            wordIndex++;
+          }
+        });
+
+        return await model.predict(tensorBuffer.toTensor()).data();
+      });
+
+      const newResults = await Promise.all(chunkPromises);
+      const chunkResults = this.state.chunkResults.slice(0, -1).concat(newResults);
+      this.setState({chunkResults});
+
+      const data =
+        chunkResults
+          .reduce((acc, results) => acc.map((e, i) => { return e + results[i]; }), initData)
+          .map((e) => e / chunkResults.length);
+
+      this.setState({data});
+    };
+  };
+
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.text !== prevProps.text)
-      this.calculate(this.props.text);
+    if (this.props.text !== prevProps.text) {
+      if (this.state.chunkSize > 0) {
+        this.chunkedCalculate(this.props.text);
+      } else {
+        this.calculate(this.props.text);
+      }
+    }
   }
 
   render() {
