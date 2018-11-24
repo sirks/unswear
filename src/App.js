@@ -87,9 +87,27 @@ class App extends Component {
     }
   };
 
+  renderScore = (score) => {
+    return (Math.round(score * 1000) / 10) + '%';
+  }
+
+  ScoreList = ({data}) => {
+    return (
+      <div className="results">
+        <div><span>toxic {this.renderScore(data[0])}</span></div>
+        <div><span>severe toxic {this.renderScore(data[1])}</span></div>
+        <div><span>obscene {this.renderScore(data[2])}</span></div>
+        <div><span>threat {this.renderScore(data[3])}</span></div>
+        <div><span>insult {this.renderScore(data[4])}</span></div>
+        <div><span>identity hate {this.renderScore(data[5])}</span></div>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className='App'>
+        <this.ScoreList data={this.state.data} />
         <input type='text' onBlur={this.onChangeText}/>
       </div>
     );
