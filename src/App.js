@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import * as tf from '@tensorflow/tfjs';
-import logo from './logo.svg';
 import './App.css';
 import Text2Speech from './tools/Text2Speech';
 import * as rp from 'request-promise-native';
@@ -91,20 +90,6 @@ class App extends Component {
   render() {
     return (
       <div className='App'>
-        <header className='App-header'>
-          <img src={logo} className='App-logo' alt='logo'/>
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className='App-link'
-            href='https://reactjs.org'
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            Learn React
-          </a>
-        </header>
         <input type='text' onBlur={this.onChangeText}/>
       </div>
     );
