@@ -3,6 +3,7 @@ import './App.css';
 import Text2Speech from './tools/Text2Speech';
 import Toxicity from "./tools/Toxicity";
 import {getSynonym} from './tools/thesaurus';
+import SpeechRecorder from "./tools/SpeechRecorder";
 
 const TOXIC_THRESHOLD = 0.33;
 import Speedometer from "./components/Speedometer";
