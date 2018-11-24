@@ -1,4 +1,4 @@
-# The Unswear Ptoject
+# The Unswear Project
 ## Purpouse
 embrace yourself your prayers is about get unsweared
 
