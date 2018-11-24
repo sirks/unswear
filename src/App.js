@@ -37,10 +37,8 @@ class App extends Component {
   }
 
   loadVocab = async () => {
-    let uri = document.location.href + '/vocab.json';
-
-    let options = {
-      uri: uri,
+    const options = {
+      uri: document.location.href + '/vocab.json',
       json: true,
     };
 
@@ -50,7 +48,7 @@ class App extends Component {
   }
 
   loadModel = async () => {
-    let loadedModel = await tf.loadModel(process.env.PUBLIC_URL + '/model.json');
+    const loadedModel = await tf.loadModel(process.env.PUBLIC_URL + '/model.json');
     this.setState({model: loadedModel});
 
     return;
@@ -60,9 +58,9 @@ class App extends Component {
     let data = this.initData;
 
     if (text && this.state.model) {
-      let tensorBuffer = tf.zeros([1, 100]).buffer();
+      const tensorBuffer = tf.zeros([1, 100]).buffer();
 
-      let words = text.split(' ');
+      const words = text.split(' ');
       let wordIndex = 0;
       words.forEach((value) => {
         if (this.vocab.hasOwnProperty(value)) {
@@ -78,11 +76,13 @@ class App extends Component {
   }
 
   onChangeText = (event) => {
-    let text = event.target.value;
+    const text = event.target.value;
     this.setState({text});
 
     if (text) {
       this.text2Speech.speak(text);
+    }
+    if (text !== undefined && text !== null && text !== this.state.text) {
       this.calculate(text.toLowerCase());
     }
   };
