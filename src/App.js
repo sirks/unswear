@@ -49,13 +49,13 @@ class App extends Component {
     return;
   }
 
-  onChangeText = (event) => {
-    const text = event.target.value;
-    this.setState({text});
+  onBlurText = (event) => {
+    if (event.target.value)
+      this.text2Speech.speak(event.target.value);
+  };
 
-    if (text) {
-      this.text2Speech.speak(text);
-    }
+  onChangeText = (event) => {
+    this.setState({text: event.target.value});
   };
 
   render() {
@@ -69,7 +69,7 @@ class App extends Component {
             text={this.state.text}
           /> :
           undefined }
-        <input type='text' onBlur={this.onChangeText} />
+        <input type='text' onBlur={this.onChangeText} onChange={this.onChangeText} />
       </div>
     );
   }
