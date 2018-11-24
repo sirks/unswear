@@ -70,10 +70,9 @@ class SpeechRecorder extends Component {
 
   componentDidMount() {
     navigator.mediaDevices.getUserMedia(this.constraints)
-      .then(stream => this.setState({stream}))
+    .then(stream => this.setState({stream}))
   }
 }
-
 
 
 export default SpeechRecorder;
