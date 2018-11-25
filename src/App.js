@@ -22,6 +22,11 @@ class App extends Component {
     this.text2Speech = new Text2Speech();
     this.text2Speech.speak(greeting);
 
+    this.speechRecorder = new SpeechRecorder(
+      console.log,
+      console.log,
+    );
+
     this.toxicity = new Toxicity();
   }
 
@@ -45,7 +50,6 @@ class App extends Component {
       <div className='App'>
         <Speedometer level={this.state.level}/>
         <textarea onChange={this.onChangeText}/>
-        <SpeechRecorder/>
       </div>
     );
   }
