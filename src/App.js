@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
+import mic from "./assets/mic.png";
 import logo from "./assets/logo.png";
 import Text2Speech from "./tools/Text2Speech";
 import Toxicity from "./tools/Toxicity";
@@ -14,7 +15,8 @@ class App extends Component {
     super();
 
     this.state = {
-      level: 0
+      level: 0,
+      recording: false,
     };
 
     // let greeting = 'Hi. I am Fred. Prepare your prayers to get unsweared';
@@ -22,7 +24,6 @@ class App extends Component {
     this.text2Speech = new Text2Speech();
     this.text2Speech.speak(greeting);
 
-    this.recording = false;
     this.speechRecorder = new SpeechRecorder(
       async (text) => {
         const promises = text.trim().split(' ').map(this.processWord);
@@ -54,27 +55,28 @@ class App extends Component {
   };
 
   toggleRecord = () => {
-    if (this.recording) {
-      this.recording = false;
+    if (this.state.recording) {
       this.speechRecorder.stopRecord();
     } else {
-      this.recording = true;
       this.speechRecorder.startRecord();
     }
+    this.setState({recording: !this.state.recording});
   };
 
   render() {
-    const buttonText = this.recording ? "Stop" : "Start";
+    const buttonText = this.state.recording ? "Stop" : "Start";
+    const buttonClass = this.state.recording ? "button-stop" : "button-start";
+    const micClass = this.state.recording ? "mic-container visible" : "mic-container invisible";
     return (
       <div className='App'>
         <div className="logo-container">
           <img src={logo} alt="" />
         </div>
         <Speedometer level={this.state.level}/>
-        <div className="form">
-          <textarea onChange={this.onChangeText}/>
-          <button onClick={this.toggleRecord}>{buttonText}</button>
+        <div className={micClass}>
+          <img src={mic} alt="" />
         </div>
+        <button className={buttonClass} onClick={this.toggleRecord}>{buttonText}</button>
       </div>
     );
   }
