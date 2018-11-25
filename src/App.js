@@ -50,6 +50,10 @@ class App extends Component {
       <div className='App'>
         <Speedometer level={this.state.level}/>
         <textarea onChange={this.onChangeText}/>
+        <div>
+          <button onClick={this.speechRecorder.startRecord}>Start</button>
+          <button onClick={this.speechRecorder.stopRecored}>Stop</button>
+        </div>
       </div>
     );
   }

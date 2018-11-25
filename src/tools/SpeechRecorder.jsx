@@ -11,9 +11,6 @@ class SpeechRecorder {
       allText: ""
     };
 
-    console.log(onFinalised)
-    console.log(onAnythingSaid)
-
     this.onFinalised = text => {
       console.log(`Finalised text: ${text}`);
       this.setState({
@@ -36,7 +33,7 @@ class SpeechRecorder {
     console.log("onEndReplaced called");
     if (!this.stopped) {
       console.log("stopped unexpectedly, restarting listener");
-      this.onBtnRecordClicked();
+      this.startRecord();
     }
   }
 
@@ -48,7 +45,7 @@ class SpeechRecorder {
     this.listener.recognition.onend = this.onEndReplaced;
   }
 
-  onBtnRecordClicked = () => {
+  startRecord = () => {
     console.log("start clicked");
     this.stopped = false;
     this.createNewListener();
@@ -56,7 +53,7 @@ class SpeechRecorder {
     console.log(this.state.listener);
   }
 
-  onBtnStopClicked = () => {
+  stopRecord = () => {
     console.log("stop clicked");
     this.stopped = true;
     this.listener.stopListening();
