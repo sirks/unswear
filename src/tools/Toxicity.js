@@ -33,12 +33,19 @@ class Toxicity {
     return this.vocabulary && this.model
   }
 
+  knownWords = {};
+
   async testWord(word) {
+    if (this.knownWords.hasOwnProperty(word)) {
+      return this.knownWords[word];
+    }
     const tensorBuffer = tf.zeros([1, 100]).buffer();
     if (this.vocabulary.hasOwnProperty(word)) {
       tensorBuffer.set(this.vocabulary[word], 0, 0);
     }
-    return (await this.model.predict(tensorBuffer.toTensor()).data())[0];
+    const score = (await this.model.predict(tensorBuffer.toTensor()).data())[0];
+    this.knownWords[word] = score;
+    return score;
   }
 
   async addWord(word) {
