@@ -1,58 +1,37 @@
 import SpeechToText from 'speech-to-text';
 
-const iterRegex = /([a-z]|[A-Z])+ ([a-z]|[A-Z])+$/g;
-const finalRegex = / ?([a-z]|[A-Z])+$/g;
+const swearWordMap = {
+  'f***': 'fuck',
+  'f******': 'fucking',
+  'b****': 'bitch',
+  's***': 'shit',
+};
 
 class SpeechRecorder {
-  constructor(onFinalised, onAnythingSaid, onWord) {
+  constructor(onWord) {
     this.constraints = {audio: true, video: false};
     this.listener = null;
+    this.onWord = onWord;
+
     this.stopped = true;
-
-    this.textFromMic = "";
-    this.allText = "";
-
-    this.lastWord = '';
-
-    this.onFinalised = text => {
-
-      const match = text.match(finalRegex);
-      if (match) {
-        const lastWord = match[0].trim();
-        if (this.lastWord !== lastWord) {
-          onWord(lastWord);
-          this.lastWord = lastWord
-        }
-      }
-      console.log(`Finalised text: ${text}`);
-      this.allText = this.allText + text + ". ";
-
-      this.textFromMic = "";
-      if (onFinalised) {
-        onFinalised(text);
-      }
-    };
-    this.onAnythingSaid = text => {
-      let match = text.match(iterRegex);
-      if (match) {
-        const lastWord = match[0].split(' ')[0];
-        if (this.lastWord !== lastWord) {
-          onWord(lastWord);
-          this.lastWord = lastWord
-        }
-      }
-
-      console.log(`Interim text: ${text}`);
-      this.textFromMic = text;
-      if (onAnythingSaid)
-        onAnythingSaid(text);
-    };
+    this.timoutId = 0;
   }
 
-  onEndReplaced = () => {
-    console.log("onEndReplaced called");
+  onText = text => {
+    this.timoutId = clearTimeout(this.timoutId);
+    // console.log(text);
+    for (let word of text.split(' ').slice(-5)) {
+      const b = swearWordMap.hasOwnProperty(word);
+      this.onWord(b ? swearWordMap[word] : word);
+    }
+    this.timoutId = setTimeout(this.restart, 10000)
+  };
+
+  restart = (event) => {
+    console.log("restart called", event);
     if (!this.stopped) {
       console.log("stopped unexpectedly, restarting listener");
+      this.stopRecord();
       this.startRecord();
     }
   }
@@ -60,9 +39,11 @@ class SpeechRecorder {
   createNewListener = () => {
     this.listener =
       new SpeechToText(
-        this.onFinalised,
-        this.onAnythingSaid);
-    this.listener.recognition.onend = this.onEndReplaced;
+        this.onText,
+        this.onText
+      );
+    // this.listener.recognition.onend = this.restart;
+    // this.listener.recognition.onerror = this.restart;
   }
 
   startRecord = () => {

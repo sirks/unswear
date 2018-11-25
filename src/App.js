@@ -1,14 +1,14 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import "./App.css";
 import mic from "./assets/mic.png";
 import logo from "./assets/logo.png";
 import Text2Speech from "./tools/Text2Speech";
 import Toxicity from "./tools/Toxicity";
-import { getSynonym } from "./tools/thesaurus";
+import {getSynonym} from "./tools/thesaurus";
 import SpeechRecorder from "./tools/SpeechRecorder";
 import Speedometer from "./components/Speedometer";
 
-const TOXIC_THRESHOLD = 0.33;
+const TOXIC_THRESHOLD = 0.25;
 
 class App extends Component {
   constructor() {
@@ -26,8 +26,6 @@ class App extends Component {
     this.toxicity = new Toxicity();
 
     this.speechRecorder = new SpeechRecorder(
-      null,
-      null,
       this.onWord,
     );
   }
@@ -81,11 +79,11 @@ class App extends Component {
     return (
       <div className='App'>
         <div className="logo-container">
-          <img src={logo} alt="" />
+          <img src={logo} alt=""/>
         </div>
         <Speedometer level={this.state.level}/>
         <div className={micClass}>
-          <img src={mic} alt="" />
+          <img src={mic} alt=""/>
         </div>
         <button className={buttonClass} onClick={this.toggleRecord}>{buttonText}</button>
       </div>

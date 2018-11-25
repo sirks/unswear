@@ -14,16 +14,18 @@ async function getSynonym(swearWord) {
     };
     const resp = await rp.get(options);
     if (!resp.data) {
-      return;
+      allSynonyms = null;
     }
-    allSynonyms = resp.data
-    .flatMap(meaning => meaning.synonyms)
-    .filter(synonym => synonym.term !== swearWord);
+    else {
+      allSynonyms = resp.data
+      .flatMap(meaning => meaning.synonyms)
+      .filter(synonym => synonym.term !== swearWord);
+    }
     knownSynonyms[swearWord] = allSynonyms
   }
-
-  const randomSynonym = allSynonyms[Math.floor(Math.random() * allSynonyms.length)];
-  return randomSynonym.term
+  if (allSynonyms) {
+    return allSynonyms[Math.floor(Math.random() * allSynonyms.length)].term
+  }
 }
 
 export {getSynonym};
