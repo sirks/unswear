@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
-import './App.css';
-import Text2Speech from './tools/Text2Speech';
+import React, { Component } from "react";
+import "./App.css";
+import logo from "./assets/logo.png";
+import Text2Speech from "./tools/Text2Speech";
 import Toxicity from "./tools/Toxicity";
-import {getSynonym} from './tools/thesaurus';
+import { getSynonym } from "./tools/thesaurus";
 import SpeechRecorder from "./tools/SpeechRecorder";
 import Speedometer from "./components/Speedometer";
-
 
 const TOXIC_THRESHOLD = 0.33;
 
@@ -14,11 +14,11 @@ class App extends Component {
     super();
 
     this.state = {
-      level: 0,
+      level: 0
     };
 
     // let greeting = 'Hi. I am Fred. Prepare your prayers to get unsweared';
-    let greeting = 'Hi';
+    let greeting = "Hi";
     this.text2Speech = new Text2Speech();
     this.text2Speech.speak(greeting);
 
@@ -67,6 +67,9 @@ class App extends Component {
     const buttonText = this.recording ? "Stop" : "Start";
     return (
       <div className='App'>
+        <div className="logo-container">
+          <img src={logo} alt="" />
+        </div>
         <Speedometer level={this.state.level}/>
         <div className="form">
           <textarea onChange={this.onChangeText}/>
