@@ -31,9 +31,8 @@ class SpeechRecorder {
   };
 
   restart = (event) => {
-    console.log("restart called", event);
+    console.log("--------------------", event);
     if (!this.stopped) {
-      console.log("stopped unexpectedly, restarting listener");
       this.stopRecord();
       this.startRecord();
     }
@@ -50,7 +49,6 @@ class SpeechRecorder {
   }
 
   startRecord = () => {
-    console.log("start clicked");
     this.stopped = false;
     this.createNewListener();
     this.listener.startListening();
@@ -58,7 +56,6 @@ class SpeechRecorder {
   }
 
   stopRecord = () => {
-    console.log("stop clicked");
     this.stopped = true;
     this.listener.stopListening();
   }
