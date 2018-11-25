@@ -5,6 +5,7 @@ const swearWordMap = {
   'f******': 'fucking',
   'b****': 'bitch',
   's***': 'shit',
+  'b*******': 'bullshit',
 };
 
 class SpeechRecorder {
