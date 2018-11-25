@@ -30,7 +30,7 @@
 
 .speedometer-container {
   height: 160px;
-  margin: 0 auto 60px;
+  margin: 0 auto 30px;
   overflow: hidden;
 }
 
@@ -40,14 +40,22 @@
 
 .logo-container {
   max-width: 600px;
-  margin: 60px auto;
+  margin: 60px auto 30px;
 }
 
 .logo-container img {
   width: 100%;
 }
+.mic-container {
+  max-width: 600px;
+  margin: 20px auto;
+}
 
 button {
+  align-items: center;
+}
+
+.button-start {
   font-family: Bangers;
   font-size: 36px;
   padding: 10px 30px;
@@ -58,6 +66,32 @@ button {
   line-height: 19px;
   color: #fff;
   background-color: #0072a7;
-  /* background-color: #FC5959; */
   border: none;
+  outline: none;
+  margin: 10px auto;
+  cursor: pointer;
+}
+
+.button-stop {
+  font-family: Bangers;
+  font-size: 36px;
+  padding: 10px 30px;
+  border-radius: 6px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  line-height: 19px;
+  color: #fff;
+  background-color: #fc5959;
+  border: none;
+  outline: none;
+  margin: 10px auto;
+  cursor: pointer;
+}
+
+.visible {
+  visibility: visible;
+}
+.invisible {
+  visibility: hidden;
 }

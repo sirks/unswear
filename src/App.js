@@ -47,8 +47,8 @@ class App extends Component {
           <img src={logo} alt="" />
         </div>
         <Speedometer level={this.state.level} />
-        <textarea onChange={this.onChangeText} />
         <SpeechRecorder />
+        <textarea onChange={this.onChangeText} />
       </div>
     );
   }
