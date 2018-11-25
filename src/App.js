@@ -31,11 +31,11 @@ class App extends Component {
   }
 
   onChangeText = async (event) => {
-    const text = ' ' + event.target.value;
+    const text = event.target.value;
     if (!text.endsWith(' ')) {
       return;
     }
-    const regex = / ([a-z]|[A-Z])+ $/g;
+    const regex = / ?([a-z]|[A-Z])+ $/g;
     const lastWord = text.match(regex)[0].trim();
     let {wordScore, totalScore} = await this.toxicity.addWord(lastWord);
     console.log(wordScore, totalScore);
