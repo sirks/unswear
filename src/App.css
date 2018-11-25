@@ -30,11 +30,34 @@
 
 .speedometer-container {
   height: 160px;
-  width: 600px;
-  margin: 0 auto;
+  margin: 0 auto 60px;
   overflow: hidden;
 }
 
 .speedometer-container div {
   transition: transform 1s ease-in-out;
+}
+
+.logo-container {
+  max-width: 600px;
+  margin: 60px auto;
+}
+
+.logo-container img {
+  width: 100%;
+}
+
+button {
+  font-family: Bangers;
+  font-size: 36px;
+  padding: 10px 30px;
+  border-radius: 6px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  line-height: 19px;
+  color: #fff;
+  background-color: #0072a7;
+  /* background-color: #FC5959; */
+  border: none;
 }
