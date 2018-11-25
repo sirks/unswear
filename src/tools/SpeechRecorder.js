@@ -23,11 +23,11 @@ class SpeechRecorder {
   onText = text => {
     this.timoutId = clearTimeout(this.timoutId);
     // console.log(text);
-    for (let word of text.split(' ').slice(-5)) {
+    for (let word of text.trim().split(' ').slice(-5)) {
       const b = swearWordMap.hasOwnProperty(word);
       this.onWord(b ? swearWordMap[word] : word);
     }
-    this.timoutId = setTimeout(this.restart, 10000)
+    this.timoutId = setTimeout(this.restart, 1000)
   };
 
   restart = (event) => {
