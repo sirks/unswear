@@ -22,6 +22,7 @@ class App extends Component {
     this.text2Speech = new Text2Speech();
     this.text2Speech.speak(greeting);
 
+    this.recording = false;
     this.speechRecorder = new SpeechRecorder(
       console.log,
       console.log,
@@ -42,18 +43,26 @@ class App extends Component {
     if (wordScore > TOXIC_THRESHOLD) {
       this.text2Speech.speak(await getSynonym(lastWord));
     }
-    this.setState({level: totalScore})
+    this.setState({level: totalScore});
+  };
+
+  toggleRecord = () => {
+    if (this.recording) {
+      this.recording = false;
+      this.speechRecorder.stopRecord();
+    } else {
+      this.recording = true;
+      this.speechRecorder.startRecord();
+    }
   };
 
   render() {
+    const buttonText = this.recording ? "Stop" : "Start";
     return (
       <div className='App'>
         <Speedometer level={this.state.level}/>
         <textarea onChange={this.onChangeText}/>
-        <div>
-          <button onClick={this.speechRecorder.startRecord}>Start</button>
-          <button onClick={this.speechRecorder.stopRecored}>Stop</button>
-        </div>
+        <button onClick={this.toggleRecord}>{buttonText}</button>
       </div>
     );
   }
