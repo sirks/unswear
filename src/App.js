@@ -24,11 +24,23 @@ class App extends Component {
 
     this.recording = false;
     this.speechRecorder = new SpeechRecorder(
-      console.log,
+      async (text) => {
+        const promises = text.trim().split(' ').map(this.processWord);
+        await Promise.all(promises);
+      },
       console.log,
     );
 
     this.toxicity = new Toxicity();
+  }
+
+  processWord = async (word) => {
+    let {wordScore, totalScore} = await this.toxicity.addWord(word);
+    console.log(wordScore, totalScore);
+    if (wordScore > TOXIC_THRESHOLD) {
+      this.text2Speech.speak(await getSynonym(word));
+    }
+    this.setState({level: totalScore});
   }
 
   onChangeText = async (event) => {
@@ -38,12 +50,7 @@ class App extends Component {
     }
     const regex = / ?([a-z]|[A-Z])+ $/g;
     const lastWord = text.match(regex)[0].trim();
-    let {wordScore, totalScore} = await this.toxicity.addWord(lastWord);
-    console.log(wordScore, totalScore);
-    if (wordScore > TOXIC_THRESHOLD) {
-      this.text2Speech.speak(await getSynonym(lastWord));
-    }
-    this.setState({level: totalScore});
+    this.processWord(lastWord);
   };
 
   toggleRecord = () => {
