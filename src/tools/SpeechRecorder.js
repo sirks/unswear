@@ -1,7 +1,10 @@
 import SpeechToText from 'speech-to-text';
 
+const iterRegex = /([a-z]|[A-Z])+ ([a-z]|[A-Z])+$/g;
+const finalRegex = / ?([a-z]|[A-Z])+$/g;
+
 class SpeechRecorder {
-  constructor(onFinalised, onAnythingSaid) {
+  constructor(onFinalised, onAnythingSaid, onWord) {
     this.constraints = {audio: true, video: false};
     this.listener = null;
     this.stopped = true;
@@ -9,16 +12,36 @@ class SpeechRecorder {
     this.textFromMic = "";
     this.allText = "";
 
+    this.lastWord = '';
+
     this.onFinalised = text => {
+
+      const match = text.match(finalRegex);
+      if (match) {
+        const lastWord = match[0].trim();
+        if (this.lastWord !== lastWord) {
+          onWord(lastWord);
+          this.lastWord = lastWord
+        }
+      }
       console.log(`Finalised text: ${text}`);
-
       this.allText = this.allText + text + ". ";
-      this.textFromMic = "";
 
-      if (onFinalised)
+      this.textFromMic = "";
+      if (onFinalised) {
         onFinalised(text);
+      }
     };
     this.onAnythingSaid = text => {
+      let match = text.match(iterRegex);
+      if (match) {
+        const lastWord = match[0].split(' ')[0];
+        if (this.lastWord !== lastWord) {
+          onWord(lastWord);
+          this.lastWord = lastWord
+        }
+      }
+
       console.log(`Interim text: ${text}`);
       this.textFromMic = text;
       if (onAnythingSaid)

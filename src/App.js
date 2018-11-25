@@ -16,33 +16,30 @@ class App extends Component {
 
     this.state = {
       level: 0,
-      recording: false,
     };
 
     // let greeting = 'Hi. I am Fred. Prepare your prayers to get unsweared';
-    let greeting = "Hi";
+    let greeting = 'Hi';
     this.text2Speech = new Text2Speech();
     this.text2Speech.speak(greeting);
 
-    this.speechRecorder = new SpeechRecorder(
-      async (text) => {
-        const promises = text.trim().split(' ').map(this.processWord);
-        await Promise.all(promises);
-      },
-      console.log,
-    );
-
     this.toxicity = new Toxicity();
+
+    this.speechRecorder = new SpeechRecorder(
+      null,
+      null,
+      this.onWord,
+    );
   }
 
-  processWord = async (word) => {
-    let {wordScore, totalScore} = await this.toxicity.addWord(word);
-    console.log(wordScore, totalScore);
+  onWord = async (lastWord) => {
+    let {wordScore, totalScore} = await this.toxicity.addWord(lastWord);
+    console.log(lastWord, wordScore, totalScore);
     if (wordScore > TOXIC_THRESHOLD) {
-      this.text2Speech.speak(await getSynonym(word));
+      this.text2Speech.speak(await getSynonym(lastWord));
     }
-    this.setState({level: totalScore});
-  }
+    this.setState({level: totalScore})
+  };
 
   onChangeText = async (event) => {
     const text = event.target.value;
@@ -51,7 +48,7 @@ class App extends Component {
     }
     const regex = / ?([a-z]|[A-Z])+ $/g;
     const lastWord = text.match(regex)[0].trim();
-    this.processWord(lastWord);
+    await this.onWord(lastWord);
   };
 
   toggleRecord = () => {
@@ -62,6 +59,20 @@ class App extends Component {
     }
     this.setState({recording: !this.state.recording});
   };
+
+  onSentence = async (sentence) => {
+    let {wordScore, totalScore} = await this.toxicity.addWord(sentence);
+    console.log(wordScore, totalScore);
+    this.setState({level: totalScore})
+  };
+
+  // onLastWord = async (word) => {
+  //   console.log(word);
+  //   let wordScore = await this.toxicity.testWord(word);
+  //   if (wordScore > TOXIC_THRESHOLD) {
+  //     this.text2Speech.speak(await getSynonym(word));
+  //   }
+  // };
 
   render() {
     const buttonText = this.state.recording ? "Stop" : "Start";
