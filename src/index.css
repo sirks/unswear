@@ -1,3 +1,12 @@
+html {
+    height: 100%;
+    background:
+        url("./assets/background.png"),
+        linear-gradient(155deg, #005990, black);
+    background-repeat: no-repeat;
+    background-position: cover;
+    background-size: 100%;
+}
 body {
   margin: 0;
   padding: 0 40px;
@@ -6,10 +15,6 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url("./assets/background.jpg");
-  background-repeat: no-repeat;
-  background-position: cover;
-  background-color: black;
 }
 
 code {
