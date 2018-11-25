@@ -43,9 +43,9 @@ class App extends Component {
   render() {
     return (
       <div className='App'>
+        <Speedometer level={this.state.level}/>
         <textarea onChange={this.onChangeText}/>
         <SpeechRecorder/>
-        <Speedometer level={this.state.level}/>
       </div>
     );
   }
