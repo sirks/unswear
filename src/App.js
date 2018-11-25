@@ -68,8 +68,10 @@ class App extends Component {
     return (
       <div className='App'>
         <Speedometer level={this.state.level}/>
-        <textarea onChange={this.onChangeText}/>
-        <button onClick={this.toggleRecord}>{buttonText}</button>
+        <div className="form">
+          <textarea onChange={this.onChangeText}/>
+          <button onClick={this.toggleRecord}>{buttonText}</button>
+        </div>
       </div>
     );
   }

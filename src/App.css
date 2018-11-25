@@ -37,4 +37,20 @@
 
 .speedometer-container div {
   transition: transform 1s ease-in-out;
+  padding: 0 0 50px 0;
+}
+
+.form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px 0 0 0;
+}
+
+.form textarea {
+    height: 24px;
+}
+
+.form button {
+    margin: 0 0 0 10px;
 }
