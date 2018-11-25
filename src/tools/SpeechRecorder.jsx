@@ -6,24 +6,21 @@ class SpeechRecorder {
     this.listener = null;
     this.stopped = true;
 
-    this.state = {
-      textFromMic: "",
-      allText: ""
-    };
+    this.textFromMic = "";
+    this.allText = "";
 
     this.onFinalised = text => {
       console.log(`Finalised text: ${text}`);
-      this.setState({
-        allText: this.state.allText + text + ". ",
-        textFromMic: ""
-      });
+
+      this.allText = this.allText + text + ". ";
+      this.textFromMic = "";
 
       if (onFinalised)
         onFinalised(text);
     };
     this.onAnythingSaid = text => {
       console.log(`Interim text: ${text}`);
-      this.setState({textFromMic: text});
+      this.textFromMic = text;
       if (onAnythingSaid)
         onAnythingSaid(text);
     };
@@ -50,7 +47,7 @@ class SpeechRecorder {
     this.stopped = false;
     this.createNewListener();
     this.listener.startListening();
-    console.log(this.state.listener);
+    console.log(this.listener);
   }
 
   stopRecord = () => {
