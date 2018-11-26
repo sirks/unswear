@@ -18,10 +18,9 @@ class App extends Component {
       level: 0,
     };
 
-    // let greeting = 'Hi. I am Fred. Prepare your prayers to get unsweared';
-    let greeting = 'Hi';
+    let greeting = 'Hi. Call me Fred. I help you unswear.';
     this.text2Speech = new Text2Speech();
-    this.text2Speech.speak(greeting);
+    this.text2Speech.speak('greeting', greeting);
 
     this.toxicity = new Toxicity();
 
@@ -34,19 +33,12 @@ class App extends Component {
     let {wordScore, totalScore} = await this.toxicity.addWord(lastWord);
     console.log(lastWord, wordScore, totalScore);
     if (wordScore > TOXIC_THRESHOLD) {
-      this.text2Speech.speak(await getSynonym(lastWord));
+      const sysnonym = await getSynonym(lastWord);
+      if (sysnonym) {
+        this.text2Speech.speak(lastWord, `instead of ${lastWord} say ${sysnonym}`);
+      }
     }
     this.setState({level: totalScore})
-  };
-
-  onChangeText = async (event) => {
-    const text = event.target.value;
-    if (!text.endsWith(' ')) {
-      return;
-    }
-    const regex = / ?([a-z]|[A-Z])+ $/g;
-    const lastWord = text.match(regex)[0].trim();
-    await this.onWord(lastWord);
   };
 
   toggleRecord = () => {
@@ -57,20 +49,6 @@ class App extends Component {
     }
     this.setState({recording: !this.state.recording});
   };
-
-  onSentence = async (sentence) => {
-    let {wordScore, totalScore} = await this.toxicity.addWord(sentence);
-    console.log(wordScore, totalScore);
-    this.setState({level: totalScore})
-  };
-
-  // onLastWord = async (word) => {
-  //   console.log(word);
-  //   let wordScore = await this.toxicity.testWord(word);
-  //   if (wordScore > TOXIC_THRESHOLD) {
-  //     this.text2Speech.speak(await getSynonym(word));
-  //   }
-  // };
 
   render() {
     const buttonText = this.state.recording ? "Stop" : "Start";

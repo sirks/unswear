@@ -3,6 +3,8 @@ import SpeechToText from 'speech-to-text';
 const swearWordMap = {
   'f***': 'fuck',
   'f******': 'fucking',
+  'f*****': 'fucker',
+  'm***********': 'motherfucker',
   'b****': 'bitch',
   's***': 'shit',
   'b*******': 'bullshit',

@@ -4,20 +4,32 @@ class Text2Speech {
     this.utterance = new SpeechSynthesisUtterance();
     this.utterance.onerror = () => console.error('speaking error');
     this.utterance.pitch = 1;
-    this.utterance.rate = 0.8;
+    this.utterance.rate = 1;
     this.utterance.volume = 1;
     this.utterance.voice = this.synth.getVoices().find((voice) => voice.name === 'Fred');
+    this.speakList = {}
   }
 
-  speak(text) {
-    if (this.synth.speaking) {
-      console.error('speechSynthesis.speaking');
+  speak(key, text) {
+    if (this.speakList.hasOwnProperty(key)) {
       return;
     }
-    if (!text) {
+    this.speakList[key] = text;
+    if (!this.synth.speaking) {
+      this.speakAll()
+    }
+  }
+
+  speakAll = () => {
+    const key = Object.keys(this.speakList)[0];
+    if (!key) {
       return;
     }
-    this.utterance.text = text;
+    this.utterance.text = this.speakList[key];
+    this.utterance.onend = () => {
+      delete this.speakList[key];
+      this.speakAll();
+    };
     this.synth.speak(this.utterance);
   }
 }
