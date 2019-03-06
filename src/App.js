@@ -35,7 +35,7 @@ class App extends Component {
     if (wordScore > TOXIC_THRESHOLD) {
       const sysnonym = await getSynonym(lastWord);
       if (sysnonym) {
-        this.text2Speech.speak(lastWord, `instead of ${lastWord} say ${sysnonym}`);
+        this.text2Speech.speak(lastWord, `better say ${sysnonym}`);
       }
     }
     this.setState({level: totalScore})
