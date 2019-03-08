@@ -18,12 +18,9 @@ class App extends Component {
       level: 0,
     };
 
-    let greeting = 'Hi. Call me Fred. I help you unswear.';
+    this.greeted = false;
     this.text2Speech = new Text2Speech();
-    this.text2Speech.speak('greeting', greeting);
-
     this.toxicity = new Toxicity();
-
     this.speechRecorder = new SpeechRecorder(
       this.onWord,
     );
@@ -42,6 +39,11 @@ class App extends Component {
   };
 
   toggleRecord = () => {
+    if (!this.greeted) {
+      this.text2Speech.speak('greeting1', 'Hi');
+      this.text2Speech.speak('greeting2', 'Call me Fred. I help you unswear.');
+      this.greeted = true;
+    }
     if (this.state.recording) {
       this.speechRecorder.stopRecord();
     } else {
