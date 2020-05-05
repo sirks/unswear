@@ -39,6 +39,7 @@ class App extends Component {
 		const sysnonym = await getSynonym(lastWord);
 		if (sysnonym) {
 			this.text2Speech.speak(lastWord, `better say ${sysnonym}`);
+      this.wordTimes['lastWord']=now;
 		}
     this.setState({level: totalScore})
   };
