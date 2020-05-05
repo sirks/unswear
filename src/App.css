@@ -54,11 +54,6 @@
     margin: 0 0 0 10px;
 }
 
-.logo-container {
-  max-width: 600px;
-  margin: 60px auto;
-}
-
 .logo-container img {
   width: 100%;
 }
@@ -80,7 +75,7 @@ button {
 
 .logo-container {
   max-width: 600px;
-  margin: 60px auto 30px;
+  margin: 0px auto 30px;
 }
 
 .logo-container img {
