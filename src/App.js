@@ -29,10 +29,13 @@ class App extends Component {
   }
 
   onWord = async (lastWord) => {
+    const now = new Date().getTime();
+    if(!!this.wordTimes['lastWord'] && now-this.wordTimes['lastWord']<WORD_AGE){
+      return;
+    }
     let {wordScore, totalScore} = await this.toxicity.addWord(lastWord);
     console.log(lastWord, wordScore, totalScore);
-    const now = new Date().getTime();
-    if(wordScore < TOXIC_THRESHOLD || (!!this.wordTimes['lastWord'] && now-this.wordTimes['lastWord']<WORD_AGE)){
+    if(wordScore < TOXIC_THRESHOLD){
     	return;
 		}
 		this.wordTimes['lastWord']=now;
