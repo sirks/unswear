@@ -24,7 +24,6 @@ class SpeechRecorder {
 
   onText = text => {
     this.timoutId = clearTimeout(this.timoutId);
-    // console.log(text);
     for (let word of text.trim().split(' ').slice(-5)) {
       const b = swearWordMap.hasOwnProperty(word);
       this.onWord(b ? swearWordMap[word] : word);
@@ -38,7 +37,7 @@ class SpeechRecorder {
       this.stopRecord();
       this.startRecord();
     }
-  }
+  };
 
   createNewListener = () => {
     this.listener =

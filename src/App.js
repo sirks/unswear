@@ -9,6 +9,7 @@ import SpeechRecorder from "./tools/SpeechRecorder";
 import Speedometer from "./components/Speedometer";
 
 const TOXIC_THRESHOLD = 0.25;
+const WORD_AGE = 5;
 
 class App extends Component {
   constructor() {
@@ -24,17 +25,22 @@ class App extends Component {
     this.speechRecorder = new SpeechRecorder(
       this.onWord,
     );
+		this.wordTimes = {}
   }
 
   onWord = async (lastWord) => {
     let {wordScore, totalScore} = await this.toxicity.addWord(lastWord);
     console.log(lastWord, wordScore, totalScore);
-    if (wordScore > TOXIC_THRESHOLD) {
-      const sysnonym = await getSynonym(lastWord);
-      if (sysnonym) {
-        this.text2Speech.speak(lastWord, `better say ${sysnonym}`);
-      }
-    }
+    const now = new Date().getTime();
+    debugger;
+    if(wordScore < TOXIC_THRESHOLD || (!!this.wordTimes['lastWord'] && now-this.wordTimes['lastWord']<WORD_AGE)){
+    	return;
+		}
+		this.wordTimes['lastWord']=now;
+		const sysnonym = await getSynonym(lastWord);
+		if (sysnonym) {
+			this.text2Speech.speak(lastWord, `better say ${sysnonym}`);
+		}
     this.setState({level: totalScore})
   };
 
